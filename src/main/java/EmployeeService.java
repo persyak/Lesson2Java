@@ -9,40 +9,43 @@ public class EmployeeService {
         employees = new Employee[initialEmployeeCount];
     }
 
+    Employee generateEmployee(int index){
+        final int MIN_AGE = 18;
+        final int MIN_SALARY = 1000;
+        Random random = new Random();
+        String[] positions = {"Developer", "Designer", "Manager"};
+        String[] names = {"Liza", "Alex", "Tolik", "Anna", "Anton"};
+
+        Employee employee;
+        int randomIndex = random.nextInt(names.length);
+        String name = names[randomIndex];
+        randomIndex = random.nextInt(positions.length);
+        int age = random.nextInt(47) + MIN_AGE;
+        int salary = random.nextInt(5000) + MIN_SALARY;
+        int fixedBags = random.nextInt(20) + 1;
+        int workDays = random.nextInt(20) + 1;
+        int rate = random.nextInt(10) + 1;
+
+        switch (positions[randomIndex]) {
+            case "Developer":
+                employee = new Developer(index+1, name, age, salary, generateGender(name), fixedBags);
+                break;
+            case "Designer":
+                employee = new Designer(index+1, name, age, salary, generateGender(name), rate, workDays);
+                break;
+            default:
+                employee = new Manager(index+1, name, age, salary, generateGender(name));
+        }
+        return employee;
+    }
+
     Employee[] generateEmployees() {
         return generateEmplyees(initialEmployeeCount);
     }
 
     Employee[] generateEmplyees(int employeeCount) {
-
-        final int MIN_AGE = 18;
-        final int MIN_SALARY = 1000;
-        String gender;
-        Random random = new Random();
-        String[] positions = {"Developer", "Designer", "Manager"};
-        String[] names = {"Liza", "Alex", "Tolik", "Anna", "Anton"};
-
         for (int i = 0; i < employeeCount; i++) {
-            int randomIndex = random.nextInt(names.length);
-            String name = names[randomIndex];
-            randomIndex = random.nextInt(positions.length);
-            int age = random.nextInt(47) + MIN_AGE;
-            int salary = random.nextInt(5000) + MIN_SALARY;
-            int fixedBags = random.nextInt(20) + 1;
-            int workDays = random.nextInt(20) + 1;
-            int rate = random.nextInt(10) + 1;
-
-
-            switch (positions[randomIndex]) {
-                case "Developer":
-                    employees[i] = new Developer(i, name, age, salary, generateGender(name), fixedBags);
-                    break;
-                case "Designer":
-                    employees[i] = new Designer(i, name, age, salary, generateGender(name), rate, workDays);
-                    break;
-                default:
-                    employees[i] = new Manager(i, name, age, salary, generateGender(name));
-            }
+            employees[i] = generateEmployee(i);
         }
         return employees;
     }
@@ -71,8 +74,24 @@ public class EmployeeService {
 
     Employee getById(long id) {
         validateId(id);
-        return employees[(int) id];
+        for(int i=0; i<employees.length; i++){
+            if(employees[i].id == id){
+                return employees[i];
+            }
+        }
+        return null;
     }
+
+    private int getIndexById(long id){
+        validateId(id);
+        for(int i=0; i<employees.length; i++){
+            if(employees[i].id == id){
+                return i;
+            }
+        }
+        return -1;
+    }
+
 
     Employee[] getByName(String name){
         int count = 0;
@@ -82,13 +101,18 @@ public class EmployeeService {
                 count++;
             }
         }
-        employeeByName = new Employee[count];
-        for(int i=0; i<count; i++){
-            if(employees[i].name.equals(name)){
-                employeeByName[i] = employees[i];
-            }
+        if(count == 0){
+            return null;
         }
-        return employeeByName;
+        else {
+            employeeByName = new Employee[count];
+            for (int i = 0; i < count; i++) {
+                if (employees[i].name.equals(name)) {
+                    employeeByName[i] = employees[i];
+                }
+            }
+            return employeeByName;
+        }
     }
 
     Employee[] sortByName(){
@@ -120,9 +144,9 @@ public class EmployeeService {
     }
 
     Employee edit(Employee employee){
-        Employee editEmployee = getById(employee.id);
-// TODO: Нужно реализовать метод
-        return employee;
+        Employee editedEmployee = getById(employee.id);
+        employee = generateEmployee(getIndexById(employee.id));
+        return editedEmployee;
     }
 
     Employee remove(long id){
@@ -146,9 +170,9 @@ public class EmployeeService {
     }
 
     void validateId(long id) {
-        if (id < 0 || id >= employees.length) {
+        if (id < 1 || id >= employees.length+1) {
             throw new IndexOutOfBoundsException("Employees list contains " + employees.length +
-                    " emplyees. Please choose id between ZERO and " + (employees.length-1));
+                    " employees. Please choose id between 1 and " + (employees.length));
         }
     }
 }
