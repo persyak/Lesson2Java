@@ -1,15 +1,29 @@
 public class EmployeeServiceTest {
     public static void main(String[] args){
-        EmployeeService employeeService = new EmployeeService(5);
+        EmployeeService employeeService = new EmployeeService();
 
-        Employee [] employees = employeeService.generateEmployees();
+        employeeService.generateEmployees(7);
 
         employeeService.printEmployees();
 
-        double s = employeeService.calculateSalaryAndBonus();
+//        System.out.println(employeeService.calculateSalaryAndBonus());
+//
+//        employeeService.getById(2);
+//
+//        employeeService.getByName("Anna");
+//
+//        employeeService.sortByName();
+//
+//        employeeService.printEmployees();
+//
+//        System.out.println();
+//
+//        employeeService.sortByNameAndSalary();
+//
+//        employeeService.printEmployees();
 
-        employeeService.getById(2);
-        System.out.println(employeeService.getById(1));
+        employeeService.edit(employeeService.getById(2));
 
+        employeeService.remove(3);
     }
 }
