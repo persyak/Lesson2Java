@@ -10,6 +10,7 @@ public class EmployeeService {
         String[] positions = {"Developer", "Designer", "Manager"};
         String[] names = {"Liza", "Alex", "Tolik", "Anna", "Anton"};
 
+        //test edit to play with the commit
         Employee employee;
         int randomIndex = random.nextInt(names.length);
         String name = names[randomIndex];
