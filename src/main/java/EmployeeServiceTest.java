@@ -6,7 +6,7 @@ public class EmployeeServiceTest {
 
         employeeService.printEmployees();
 
-//        System.out.println(employeeService.calculateSalaryAndBonus());
+        System.out.println(employeeService.calculateSalaryAndBonus());
 //
 //        employeeService.getById(2);
 //
