@@ -20,7 +20,7 @@ public class EmployeeServiceTest {
 //
 //        employeeService.sortByNameAndSalary();
 //
-//        employeeService.printEmployees();
+        employeeService.printEmployees();
 
         employeeService.edit(employeeService.getById(2));
 
